@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Home</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='white' stroke='%2338b6e8' stroke-width='3'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&family=Rajdhani:wght@600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cyan:#38b6e8;
+  --ring:#8fd6f3;
+  --ink:#8a8e94;
+  --ink-dark:#5d6167;
+  --font:"Nunito","Segoe UI","Helvetica Neue",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{
+  font-family:var(--font);color:var(--ink-dark);min-height:100vh;overflow-x:hidden;
+  background:
+    repeating-linear-gradient(0deg,rgba(255,255,255,.55) 0 1px,rgba(0,0,0,.018) 1px 2px),
+    linear-gradient(180deg,#fdfdfd 0%,#f1f2f3 55%,#e4e6e8 100%);
+  background-attachment:fixed;
+}
+button{font:inherit;color:inherit;cursor:pointer}
+svg{fill:currentColor;flex:none}
+:focus-visible{outline:3px solid var(--cyan);outline-offset:2px}
+
+/* Pagina */
+.stage{
+  min-height:calc(100vh - 124px);padding:28px 16px 20px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px;
+}
+
+/* Scritta sopra la ricerca */
+.brand{
+  margin:0 0 -12px;font-family:"Rajdhani","Yu Gothic","Meiryo","Hiragino Sans",sans-serif;font-weight:600;
+  font-size:clamp(2.4rem,5vw,3.4rem);letter-spacing:.12em;line-height:1;color:var(--ink);
+  text-shadow:0 1px 0 #fff;text-align:center;
+}
+
+/* Scritta sopra la ricerca */
+.brand{
+  margin:0 0 -12px;font-family:"M PLUS Rounded 1c","Yu Gothic","Meiryo","Hiragino Sans",sans-serif;font-weight:700;
+  font-size:clamp(2.4rem,5vw,3.4rem);letter-spacing:.08em;line-height:1.1;color:var(--ink);text-align:center;
+  text-shadow:0 1px 0 #fff;user-select:none;
+}
+
+/* Ricerca */
+#search{
+  position:relative;width:min(560px,90vw);height:48px;display:flex;align-items:center;
+  padding:0 6px 0 22px;background:#fff;border:1px solid #d3d7db;border-radius:999px;
+  box-shadow:inset 0 2px 5px rgba(0,0,0,.09),0 1px 0 #fff;
+}
+#search:focus-within{border-color:var(--cyan);box-shadow:inset 0 2px 5px rgba(0,0,0,.07),0 0 0 3px rgba(56,182,232,.3)}
+#q{flex:1;min-width:0;background:none;border:0;outline:0;color:var(--ink-dark);font:inherit;font-size:1.05rem}
+#ai{
+  width:36px;height:36px;border-radius:50%;border:0;background:transparent;display:grid;place-items:center;color:var(--ink);
+}
+#ai:hover{background:rgba(56,182,232,.14);color:var(--cyan)}
+#ai svg{width:24px;height:24px;transition:transform .15s}
+#ai[aria-expanded="true"] svg{transform:rotate(180deg)}
+#aiMenu{
+  position:absolute;top:calc(100% + 10px);right:0;display:none;gap:10px;padding:9px 12px;z-index:30;
+  background:#fff;border:2px solid var(--ring);border-radius:999px;box-shadow:0 8px 22px rgba(0,0,0,.14);
+}
+#aiMenu.open{display:flex}
+
+/* Cerchi con anello azzurro (stile Wii) */
+.ring{
+  width:48px;height:48px;border-radius:50%;display:grid;place-items:center;text-decoration:none;color:var(--ink);
+  background:radial-gradient(circle at 30% 22%,#fff,#eef1f3);border:2.5px solid var(--ring);padding:0;
+  box-shadow:inset 0 -3px 6px rgba(0,0,0,.06),0 2px 5px rgba(0,0,0,.14);
+}
+.ring:hover{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(56,182,232,.28),0 2px 6px rgba(0,0,0,.16)}
+.ring img{width:26px;height:26px}
+.ring svg{width:24px;height:24px}
+#aiMenu .ring{width:42px;height:42px}
+.fb{font-weight:700;font-size:1.05rem;color:var(--ink-dark)}
+
+/* Griglia siti */
+.gridwrap{position:relative;width:min(960px,92vw)}
+#grid{display:grid;gap:9px}
+.cell{position:relative;aspect-ratio:2.2/1}
+.tile,.addtile{
+  width:100%;height:100%;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
+  text-decoration:none;color:var(--ink);background:linear-gradient(180deg,#fff,#eceef0);border:1px solid #d6dade;
+  box-shadow:0 1px 2px rgba(0,0,0,.09),inset 0 1px 0 #fff;padding:0 8px;
+}
+.tile:hover,.addtile:hover,.tile:focus-visible,.addtile:focus-visible{
+  border-color:var(--cyan);box-shadow:0 0 0 3px rgba(56,182,232,.35),0 5px 12px rgba(0,0,0,.14);outline:0;
+}
+.tile .ti{width:34px;height:34px;display:grid;place-items:center}
+.tile .ti img{width:32px;height:32px;object-fit:contain}
+.tile .name{font-size:.72rem;font-weight:600;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.addtile svg{width:34px;height:34px;color:#b5bac0}
+.addtile:hover svg{color:var(--cyan)}
+.cell.empty{
+  border-radius:12px;background:linear-gradient(180deg,#e3e5e8,#ebedef);border:1px solid #d6dadd;
+  box-shadow:inset 0 2px 4px rgba(0,0,0,.07),0 1px 0 rgba(255,255,255,.8);
+}
+.x{
+  position:absolute;top:-6px;right:-6px;width:22px;height:22px;border-radius:50%;border:1px solid #cdd2d6;
+  background:#fff;color:var(--ink-dark);display:none;place-items:center;padding:0;z-index:2;
+  box-shadow:0 1px 3px rgba(0,0,0,.18);
+}
+.x svg{width:13px;height:13px}
+.x:hover{border-color:var(--cyan);color:var(--cyan)}
+.cell:hover .x,.cell:focus-within .x,.ltile:hover .x,.ltile:focus-within .x{display:grid}
+
+.pg{
+  position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:50%;
+  border:2px solid #fff;background:linear-gradient(180deg,#4fb6f0,#1f84d4);color:#fff;
+  display:grid;place-items:center;padding:0;box-shadow:0 2px 6px rgba(0,0,0,.28);z-index:3;
+}
+.pg[hidden]{display:none}
+.pg:hover{filter:brightness(1.1)}
+.pg.prev{left:-20px}
+.pg.next{right:-20px}
+.pg svg{width:24px;height:24px}
+
+/* Barra in basso */
+.dock{position:fixed;left:0;right:0;bottom:0;height:124px;z-index:10;pointer-events:none}
+.dock>*{pointer-events:auto}
+#dockSvg{position:absolute;left:0;top:0;pointer-events:none;filter:drop-shadow(0 -2px 5px rgba(0,0,0,.09))}
+.box{position:absolute;top:27px;display:flex;gap:12px;align-items:flex-start}
+.box.left{left:20px}
+.box.right{right:20px}
+.ltile{position:relative;width:48px;height:48px}
+.center{position:absolute;left:50%;top:54px;transform:translateX(-50%);text-align:center;pointer-events:none;white-space:nowrap}
+#clock{font-size:2.15rem;font-weight:300;letter-spacing:.09em;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums}
+#date{margin-top:7px;font-size:.98rem;font-weight:700;color:var(--ink-dark)}
+
+/* Meteo nella barra */
+.witem{display:flex;flex-direction:column;align-items:center;gap:4px;width:88px}
+.wpill{
+  height:44px;margin-top:2px;padding:0 14px;border-radius:999px;display:flex;align-items:center;gap:7px;
+  background:radial-gradient(circle at 30% 22%,#fff,#eef1f3);border:2.5px solid var(--ring);
+  box-shadow:inset 0 -3px 6px rgba(0,0,0,.06),0 2px 5px rgba(0,0,0,.14);
+}
+.wpill:hover{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(56,182,232,.28),0 2px 6px rgba(0,0,0,.16)}
+.we{font-size:1.25rem;line-height:1}
+.wt{font-size:1.02rem;font-weight:700;color:var(--ink-dark)}
+.wl{font-size:.68rem;font-weight:600;color:var(--ink);max-width:88px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+#wPanel{
+  position:fixed;right:16px;bottom:134px;width:min(340px,calc(100vw - 32px));z-index:40;padding:14px 16px 16px;
+  background:#fff;border:2px solid var(--ring);border-radius:22px;box-shadow:0 10px 30px rgba(0,0,0,.2);
+}
+#wPanel[hidden]{display:none}
+.wph{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.wph h2{margin:0;font-size:1rem;font-weight:700;color:var(--ink-dark)}
+.mini{
+  width:32px;height:32px;border-radius:50%;border:1px solid #d3d7db;background:#f4f5f6;display:grid;place-items:center;
+  padding:0;color:var(--ink-dark);flex:none;
+}
+.mini:hover{border-color:var(--cyan);color:var(--cyan)}
+.mini svg{width:18px;height:18px}
+.wrow{display:flex;align-items:center;gap:10px;padding:7px 0}
+.wrow+.wrow{border-top:1px solid #eceef0}
+.wrow .we{width:30px;text-align:center;font-size:1.5rem}
+.wrow .inf{flex:1;min-width:0}
+.wrow .nm{font-size:.92rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wrow .mm{font-size:.76rem;color:var(--ink)}
+.wrow .tp{font-size:1.25rem;font-weight:300}
+.field{
+  width:100%;margin-top:8px;padding:10px 14px;border:1px solid #d3d7db;border-radius:14px;background:#fff;
+  color:var(--ink-dark);font:inherit;font-size:.9rem;outline:0;box-shadow:inset 0 1px 3px rgba(0,0,0,.07);
+}
+.field:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(56,182,232,.25)}
+#wResults button{
+  display:block;width:100%;text-align:left;background:none;border:0;border-radius:10px;padding:8px 10px;font-size:.88rem;
+}
+#wResults button:hover{background:#eef8fd}
+#wResults small{display:block;color:var(--ink)}
+
+/* Finestra aggiungi sito */
+dialog{
+  border:2px solid var(--ring);border-radius:24px;background:#fff;color:var(--ink-dark);padding:22px;
+  width:min(420px,calc(100vw - 32px));font-family:var(--font);box-shadow:0 14px 40px rgba(0,0,0,.25);
+}
+dialog::backdrop{background:rgba(60,70,80,.35)}
+dialog h3{margin:0 0 6px;font-size:1.2rem}
+dialog label{display:block;font-size:.8rem;font-weight:600;color:var(--ink);margin:12px 0 0}
+.dact{display:flex;justify-content:flex-end;gap:8px;margin-top:20px}
+.tbtn{border:0;background:transparent;color:var(--cyan);padding:10px 18px;border-radius:999px;font-weight:700}
+.tbtn:hover{background:rgba(56,182,232,.12)}
+.tbtn.fill{background:var(--cyan);color:#fff}
+.tbtn.fill:hover{filter:brightness(1.07)}
+
+@media (max-width:640px){
+  .center{top:56px}
+  #clock{font-size:1.7rem}
+  #date{font-size:.85rem}
+  .ring{width:42px;height:42px}
+  .ltile{width:42px;height:42px}
+  .box{gap:8px}
+}
+</style>
+</head>
+<body>
+
+<main class="stage">
+  <div class="brand" lang="ja">グーグル</div>
+  <form id="search" autocomplete="off" role="search">
+    <input id="q" type="text" aria-label="Cerca" autofocus>
+    <button id="ai" type="button" aria-haspopup="menu" aria-expanded="false" title="Assistenti IA" aria-label="Assistenti IA"><svg viewBox="0 0 24 24"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/></svg></button>
+    <button type="submit" hidden>Cerca</button>
+    <div id="aiMenu" role="menu" aria-label="Assistenti IA"></div>
+  </form>
+
+  <section class="gridwrap" aria-label="Siti">
+    <button class="pg prev" id="pgPrev" type="button" hidden aria-label="Pagina precedente"><svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg></button>
+    <div id="grid"></div>
+    <button class="pg next" id="pgNext" type="button" hidden aria-label="Pagina successiva"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></button>
+  </section>
+</main>
+
+<footer class="dock" id="dock">
+  <svg id="dockSvg" aria-hidden="true">
+    <defs>
+      <linearGradient id="dg" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#fbfcfc"/>
+        <stop offset="1" stop-color="#dcdfe2"/>
+      </linearGradient>
+    </defs>
+    <path id="dockFill" fill="url(#dg)"/>
+    <path id="dockLine" fill="none" stroke="#5cc3ee" stroke-width="2"/>
+  </svg>
+  <div class="box left" id="leftBox"></div>
+  <div class="center">
+    <div id="clock">--:--</div>
+    <div id="date"></div>
+  </div>
+  <div class="box right" id="rightBox"></div>
+</footer>
+
+<div id="wPanel" hidden role="dialog" aria-label="Meteo">
+  <div class="wph">
+    <h2>Meteo</h2>
+    <button class="mini" id="wClose" type="button" aria-label="Chiudi"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+  </div>
+  <div id="wList"></div>
+  <input id="wInput" class="field" type="search" placeholder="Aggiungi una località e premi Invio" aria-label="Cerca una località">
+  <div id="wResults"></div>
+</div>
+
+<dialog id="dlg">
+  <form id="dlgForm" method="dialog">
+    <h3>Aggiungi sito</h3>
+    <label for="dUrl">Indirizzo</label>
+    <input id="dUrl" class="field" type="text" placeholder="esempio.it" required>
+    <label for="dName">Nome (facoltativo)</label>
+    <input id="dName" class="field" type="text">
+    <label for="dIcon">Icona: indirizzo di un'immagine (facoltativo)</label>
+    <input id="dIcon" class="field" type="text" placeholder="https://.../logo.png">
+    <div class="dact">
+      <button class="tbtn" type="button" id="dCancel">Annulla</button>
+      <button class="tbtn fill" type="submit">Aggiungi</button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+const $ = id => document.getElementById(id);
+const KEY = "home-wii-v1";
+const MAX_LOGOS = 6;
+const CORVO_ICON = "https://jeriko001.github.io/Thelordofthelinks/lotl.png";
+
+const DEF = {
+  locs: [
+    { name: "Manesseno (GE)", lat: 44.4772, lon: 8.8869 },
+    { name: "Mioglia (SV)",   lat: 44.4700, lon: 8.4830 }
+  ],
+  logos: [
+    { name: "Gmail",            url: "https://mail.google.com" },
+    { name: "Google Drive",     url: "https://drive.google.com" },
+    { name: "Chrome Web Store", url: "https://chromewebstore.google.com" }
+  ],
+  links: [
+    { name: "Telegram",              url: "https://web.telegram.org" },
+    { name: "GitHub",                url: "https://github.com" },
+    { name: "YouTube",               url: "https://www.youtube.com" },
+    { name: "The Lord of the Links", url: "https://jeriko001.github.io/Thelordofthelinks/", icon: CORVO_ICON },
+    { name: "Internet Archive",      url: "https://archive.org" },
+    { name: "Google Documenti",      url: "https://docs.google.com/document/" }
+  ]
+};
+const AI = [
+  { name: "duck.ai",  url: "https://duck.ai" },
+  { name: "Gemini",   url: "https://gemini.google.com" },
+  { name: "Claude",   url: "https://claude.ai" },
+  { name: "ChatGPT",  url: "https://chatgpt.com" }
+];
+
+let state;
+try { state = Object.assign(JSON.parse(JSON.stringify(DEF)), JSON.parse(localStorage.getItem(KEY) || "{}")); }
+catch (e) { state = JSON.parse(JSON.stringify(DEF)); }
+["locs", "logos", "links"].forEach(k => { if (!Array.isArray(state[k])) state[k] = JSON.parse(JSON.stringify(DEF[k])); });
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+
+const PLUS = '<svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>';
+const XICO = '<svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>';
+const MINUS = '<svg viewBox="0 0 24 24"><path d="M19 13H5v-2h14v2z"/></svg>';
+const PENCIL = '<svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a.996.996 0 000-1.41l-2.34-2.34a.996.996 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>';
+
+/* Icone dei siti */
+const fav = u => "https://www.google.com/s2/favicons?sz=64&domain_url=" + encodeURIComponent(u);
+function favImg(url, size, onFail){
+  const img = new Image();
+  img.alt = ""; img.width = size; img.height = size;
+  img.onerror = onFail;
+  img.src = fav(url);
+  return img;
+}
+function siteIcon(l, size, fallback){
+  if (l.icon) {
+    const img = new Image();
+    img.alt = ""; img.width = size; img.height = size; img.style.objectFit = "contain";
+    img.onerror = () => { img.onerror = fallback; img.src = fav(l.url); };
+    img.src = l.icon;
+    return img;
+  }
+  return favImg(l.url, size, fallback);
+}
+function letterInto(el, name){
+  el.textContent = "";
+  const s = document.createElement("span");
+  s.className = "fb"; s.textContent = (name || "?").trim().charAt(0).toUpperCase();
+  el.appendChild(s);
+}
+
+/* Orologio e data */
+function tick(){
+  const d = new Date();
+  $("clock").textContent = d.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
+  const t = d.toLocaleDateString("it-IT", { weekday: "short", day: "numeric", month: "numeric" });
+  $("date").textContent = t.charAt(0).toUpperCase() + t.slice(1);
+}
+tick(); setInterval(tick, 1000);
+
+/* Barra in basso: due onde che si adattano al contenuto */
+function layoutDock(){
+  const W = $("dock").clientWidth, H = 124;
+  const L = $("leftBox").offsetWidth + 20 + 24;
+  const R = $("rightBox").offsetWidth + 20 + 24;
+  const yh = 8, ym = 46;
+  const S = Math.max(24, Math.min(90, (W - L - R) / 2 - 80));
+  const top = "M0 " + yh + " H" + L +
+    " C" + (L + S * .55) + " " + yh + " " + (L + S * .45) + " " + ym + " " + (L + S) + " " + ym +
+    " H" + (W - R - S) +
+    " C" + (W - R - S * .45) + " " + ym + " " + (W - R - S * .55) + " " + yh + " " + (W - R) + " " + yh +
+    " H" + W;
+  const svg = $("dockSvg");
+  svg.setAttribute("width", W); svg.setAttribute("height", H);
+  svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+  $("dockFill").setAttribute("d", top + " V" + H + " H0 Z");
+  $("dockLine").setAttribute("d", top);
+}
+if (window.ResizeObserver) {
+  const ro = new ResizeObserver(layoutDock);
+  ro.observe($("leftBox")); ro.observe($("rightBox"));
+}
+window.addEventListener("resize", layoutDock);
+
+/* Dialog aggiungi sito */
+let addTarget = "links";
+function openAdd(target){
+  addTarget = target;
+  $("dUrl").value = ""; $("dName").value = ""; $("dIcon").value = "";
+  $("dlg").showModal(); $("dUrl").focus();
+}
+$("dCancel").onclick = () => $("dlg").close();
+$("dlgForm").onsubmit = e => {
+  e.preventDefault();
+  let url = $("dUrl").value.trim();
+  if (!url) return;
+  if (!/^https?:\/\//i.test(url)) url = "https://" + url;
+  let name = $("dName").value.trim();
+  if (!name) { try { name = new URL(url).hostname.replace(/^www\./, ""); } catch (er) { name = url; } }
+  const item = { name, url };
+  const icon = $("dIcon").value.trim();
+  if (icon) item.icon = icon;
+  state[addTarget].push(item);
+  save(); drawLogos(); drawGrid();
+  $("dlg").close();
+};
+
+/* In basso a sinistra: Gmail, Drive, Chrome Web Store e +. L'onda cresce con le icone */
+function drawLogos(){
+  const box = $("leftBox");
+  box.textContent = "";
+  state.logos.forEach((l, i) => {
+    const t = document.createElement("div"); t.className = "ltile";
+    const a = document.createElement("a");
+    a.className = "ring"; a.href = l.url; a.title = l.name; a.setAttribute("aria-label", l.name);
+    a.appendChild(siteIcon(l, 26, () => letterInto(a, l.name)));
+    const x = document.createElement("button");
+    x.type = "button"; x.className = "x"; x.title = "Rimuovi"; x.setAttribute("aria-label", "Rimuovi " + l.name);
+    x.innerHTML = XICO;
+    x.onclick = () => { state.logos.splice(i, 1); save(); drawLogos(); };
+    t.append(a, x);
+    box.appendChild(t);
+  });
+  if (state.logos.length < MAX_LOGOS) {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "ring"; b.title = "Aggiungi sito"; b.setAttribute("aria-label", "Aggiungi sito");
+    b.innerHTML = PLUS;
+    b.onclick = () => openAdd("logos");
+    box.appendChild(b);
+  }
+  layoutDock();
+}
+
+/* Griglia di siti */
+const cols = () => window.innerWidth < 900 ? 4 : 6;
+let page = 0;
+function drawGrid(){
+  const c = cols(), per = c * 3;
+  const items = state.links.map((l, i) => ({ l, i }));
+  items.push({ plus: true });
+  const pages = Math.max(1, Math.ceil(items.length / per));
+  if (page >= pages) page = pages - 1;
+  const grid = $("grid");
+  grid.style.gridTemplateColumns = "repeat(" + c + ",minmax(0,1fr))";
+  grid.textContent = "";
+  const slice = items.slice(page * per, page * per + per);
+  slice.forEach(it => {
+    const cell = document.createElement("div"); cell.className = "cell";
+    if (it.plus) {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "addtile"; b.title = "Aggiungi sito"; b.setAttribute("aria-label", "Aggiungi sito");
+      b.innerHTML = PLUS;
+      b.onclick = () => openAdd("links");
+      cell.appendChild(b);
+    } else {
+      const l = it.l;
+      const a = document.createElement("a");
+      a.className = "tile"; a.href = l.url; a.title = l.name;
+      const ti = document.createElement("span"); ti.className = "ti";
+      ti.appendChild(siteIcon(l, 32, () => letterInto(ti, l.name)));
+      const nm = document.createElement("span"); nm.className = "name"; nm.textContent = l.name;
+      a.append(ti, nm);
+      const x = document.createElement("button");
+      x.type = "button"; x.className = "x"; x.title = "Rimuovi"; x.setAttribute("aria-label", "Rimuovi " + l.name);
+      x.innerHTML = XICO;
+      x.onclick = () => { state.links.splice(it.i, 1); save(); drawGrid(); };
+      cell.append(a, x);
+    }
+    grid.appendChild(cell);
+  });
+  for (let k = slice.length; k < per; k++) {
+    const e = document.createElement("div"); e.className = "cell empty";
+    grid.appendChild(e);
+  }
+  $("pgPrev").hidden = page === 0;
+  $("pgNext").hidden = page >= pages - 1;
+}
+$("pgPrev").onclick = () => { page--; drawGrid(); };
+$("pgNext").onclick = () => { page++; drawGrid(); };
+window.addEventListener("resize", drawGrid);
+
+/* Ricerca e assistenti IA */
+$("search").onsubmit = e => {
+  e.preventDefault();
+  const q = $("q").value.trim();
+  if (!q) return;
+  if (!/\s/.test(q) && /^(https?:\/\/)?[\w-]+(\.[\w-]+)+(\/\S*)?$/i.test(q)) {
+    location.href = /^https?:\/\//i.test(q) ? q : "https://" + q;
+  } else {
+    location.href = "https://www.google.com/search?q=" + encodeURIComponent(q);
+  }
+};
+const aiMenu = $("aiMenu"), aiBtn = $("ai");
+AI.forEach(x => {
+  const a = document.createElement("a");
+  a.className = "ring"; a.href = x.url; a.title = x.name; a.setAttribute("aria-label", x.name); a.setAttribute("role", "menuitem");
+  a.appendChild(favImg(x.url, 24, () => letterInto(a, x.name)));
+  aiMenu.appendChild(a);
+});
+function aiToggle(open){ aiMenu.classList.toggle("open", open); aiBtn.setAttribute("aria-expanded", String(open)); }
+aiBtn.onclick = e => { e.stopPropagation(); aiToggle(!aiMenu.classList.contains("open")); };
+
+/* Meteo */
+const ICON = c =>
+  c === 0 ? "\u2600\uFE0F" : c === 1 ? "\uD83C\uDF24\uFE0F" : c === 2 ? "\u26C5" : c === 3 ? "\u2601\uFE0F" :
+  (c === 45 || c === 48) ? "\uD83C\uDF2B\uFE0F" : (c >= 51 && c <= 57) ? "\uD83C\uDF26\uFE0F" :
+  (c >= 61 && c <= 67) ? "\uD83C\uDF27\uFE0F" : (c >= 71 && c <= 77) ? "\uD83C\uDF28\uFE0F" :
+  (c >= 80 && c <= 82) ? "\uD83C\uDF26\uFE0F" : (c === 85 || c === 86) ? "\uD83C\uDF28\uFE0F" :
+  c >= 95 ? "\u26C8\uFE0F" : "\uD83C\uDF21\uFE0F";
+const cache = {};
+const keyOf = loc => loc.lat + "," + loc.lon;
+const shortName = n => n.replace(/\s*\(.*\)\s*$/, "");
+
+async function getWeather(loc){
+  const u = "https://api.open-meteo.com/v1/forecast?latitude=" + loc.lat + "&longitude=" + loc.lon +
+    "&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=1";
+  const r = await fetch(u);
+  if (!r.ok) throw new Error("meteo");
+  const d = await r.json();
+  return {
+    t: Math.round(d.current.temperature_2m), code: d.current.weather_code,
+    max: Math.round(d.daily.temperature_2m_max[0]), min: Math.round(d.daily.temperature_2m_min[0])
+  };
+}
+function drawWeatherBar(){
+  const box = $("rightBox");
+  box.textContent = "";
+  state.locs.forEach(loc => {
+    const w = cache[keyOf(loc)];
+    const it = document.createElement("div"); it.className = "witem";
+    const pill = document.createElement("button");
+    pill.type = "button"; pill.className = "wpill"; pill.title = loc.name; pill.setAttribute("aria-label", "Meteo " + loc.name);
+    const em = document.createElement("span"); em.className = "we";
+    em.textContent = w ? (w.err ? "\u2014" : ICON(w.code)) : "\u2026";
+    const tp = document.createElement("span"); tp.className = "wt";
+    tp.textContent = w && !w.err ? w.t + "\u00B0" : "";
+    pill.append(em, tp);
+    pill.onclick = e => { e.stopPropagation(); wToggle(); };
+    const lb = document.createElement("span"); lb.className = "wl"; lb.textContent = shortName(loc.name);
+    it.append(pill, lb);
+    box.appendChild(it);
+  });
+  const ed = document.createElement("button");
+  ed.type = "button"; ed.className = "ring"; ed.title = "Modifica località"; ed.setAttribute("aria-label", "Modifica località");
+  ed.innerHTML = PENCIL;
+  ed.onclick = e => { e.stopPropagation(); wToggle(); };
+  box.appendChild(ed);
+  layoutDock();
+}
+function drawWeatherPanel(){
+  const list = $("wList");
+  list.textContent = "";
+  state.locs.forEach((loc, i) => {
+    const w = cache[keyOf(loc)];
+    const row = document.createElement("div"); row.className = "wrow";
+    const em = document.createElement("div"); em.className = "we"; em.textContent = w ? (w.err ? "\u2014" : ICON(w.code)) : "\u2026";
+    const inf = document.createElement("div"); inf.className = "inf";
+    const nm = document.createElement("div"); nm.className = "nm"; nm.textContent = loc.name;
+    const mm = document.createElement("div"); mm.className = "mm";
+    mm.textContent = w && !w.err ? "max " + w.max + "\u00B0  min " + w.min + "\u00B0" : (w && w.err ? "non disponibile" : "");
+    inf.append(nm, mm);
+    const tp = document.createElement("div"); tp.className = "tp"; tp.textContent = w && !w.err ? w.t + "\u00B0" : "";
+    const del = document.createElement("button");
+    del.type = "button"; del.className = "mini"; del.title = "Togli"; del.setAttribute("aria-label", "Togli " + loc.name);
+    del.innerHTML = MINUS;
+    del.onclick = () => { state.locs.splice(i, 1); save(); drawWeatherBar(); drawWeatherPanel(); };
+    row.append(em, inf, tp, del);
+    list.appendChild(row);
+  });
+  if (!state.locs.length) {
+    const p = document.createElement("div"); p.className = "mm"; p.style.padding = "10px 0";
+    p.textContent = "Nessuna località: aggiungine una qui sotto.";
+    list.appendChild(p);
+  }
+}
+async function refreshWeather(){
+  await Promise.all(state.locs.map(async loc => {
+    try { cache[keyOf(loc)] = await getWeather(loc); } catch (e) { cache[keyOf(loc)] = { err: true }; }
+  }));
+  drawWeatherBar(); drawWeatherPanel();
+}
+function wToggle(force){
+  const p = $("wPanel");
+  const open = typeof force === "boolean" ? force : p.hidden;
+  p.hidden = !open;
+  if (open) { drawWeatherPanel(); $("wInput").value = ""; $("wResults").textContent = ""; }
+}
+$("wClose").onclick = () => wToggle(false);
+$("wInput").addEventListener("keydown", async e => {
+  if (e.key !== "Enter") return;
+  e.preventDefault();
+  const q = $("wInput").value.trim();
+  if (!q) return;
+  const box = $("wResults"); box.textContent = "";
+  try {
+    const r = await fetch("https://geocoding-api.open-meteo.com/v1/search?name=" + encodeURIComponent(q) + "&count=6&language=it&format=json");
+    const d = await r.json();
+    if (!d.results || !d.results.length) { box.textContent = "Nessun risultato."; return; }
+    d.results.forEach(x => {
+      const b = document.createElement("button"); b.type = "button";
+      b.textContent = x.name;
+      const s = document.createElement("small");
+      s.textContent = [x.admin2, x.admin1, x.country].filter(Boolean).join(", ");
+      b.appendChild(s);
+      b.onclick = () => {
+        state.locs.push({ name: x.name + (x.admin2 ? " (" + x.admin2 + ")" : ""), lat: x.latitude, lon: x.longitude });
+        save();
+        $("wInput").value = ""; box.textContent = "";
+        drawWeatherBar(); drawWeatherPanel(); refreshWeather();
+      };
+      box.appendChild(b);
+    });
+  } catch (err) { box.textContent = "Ricerca non riuscita, controlla la connessione."; }
+});
+
+/* Chiusura menu e pannelli */
+document.addEventListener("click", e => {
+  if (!aiMenu.contains(e.target)) aiToggle(false);
+  if (!$("wPanel").hidden && !$("wPanel").contains(e.target) && !$("rightBox").contains(e.target)) wToggle(false);
+});
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") { aiToggle(false); wToggle(false); }
+});
+
+/* Avvio */
+drawLogos(); drawGrid(); drawWeatherBar(); refreshWeather();
+setInterval(refreshWeather, 15 * 60 * 1000);
+layoutDock();
+</script>
+</body>
+</html>
